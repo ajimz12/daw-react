@@ -20,7 +20,7 @@ const Contador = () => {
         <p className="text-2xl text-center text-blue-500 font-semibold">
           {contador}
         </p>
-        <div className="flex justify-center mt-5 gap-4">
+        <div className="flex justify-center mt-5 gap-4"> 
           <button
             className="bg-blue-300 hover:bg-blue-700 p-3"
             onClick={() => handleClick(1)}
