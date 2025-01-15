@@ -1,15 +1,13 @@
-import { useState } from "react";
-import Hijo from "./components/parametros/Hijo";
-import Padre from "./components/parametros/Padre";
+import ProductList from "./components/useEffectFetching/ProductList";
 
-const initialStateInfo = { nombre: "Juan", edad: 10, isAdmin: false };
+// const initialStateInfo = { nombre: "Juan", edad: 10, isAdmin: false };
 
 const App = () => {
-  const [info, setInfo] = useState(initialStateInfo);
+  // const [info, setInfo] = useState(initialStateInfo);
 
-  const handleClickEdad = () => {
-    setInfo((prevInfo) => ({ ...prevInfo, edad: prevInfo.edad + 1 }));
-  };
+  // const handleClickEdad = () => {
+  //   setInfo((prevInfo) => ({ ...prevInfo, edad: prevInfo.edad + 1 }));
+  // };
   return (
     // <div className="min-h-screen bg-gray-100 p-8">
     //   <h1 className="text-3xl text-center mb-20 font-bold">
@@ -23,11 +21,13 @@ const App = () => {
     //   </div>
     // </div>
     <>
-      <p>El nombre es {info.nombre}</p>
+      {/* <p>El nombre es {info.nombre}</p>
       <p>La edad es {info.edad}</p>
       <Padre info={info} setInfo={setInfo} handleClickEdad={handleClickEdad}>
         <Hijo info={info} handleClickEdad={handleClickEdad} />
-      </Padre>
+      </Padre> */}
+      {/* <Saludo /> */}
+      <ProductList />
     </>
   );
 };

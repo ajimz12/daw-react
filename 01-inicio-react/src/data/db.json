@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "titulo": "JavaScript: The Definitive Guide",
+    "precio": 45.99,
+    "tags": ["JavaScript", "Web Development", "Frontend"],
+    "imagen": "https://example.com/js-guide.jpg"
+  },
+  {
+    "id": 2,
+    "titulo": "Python Crash Course",
+    "precio": 39.95,
+    "tags": ["Python", "Beginner", "Data Science"],
+    "imagen": "https://example.com/python-crash-course.jpg"
+  },
+  {
+    "id": 3,
+    "titulo": "Clean Code",
+    "precio": 49.99,
+    "tags": ["Java", "Software Engineering", "Best Practices"],
+    "imagen": "https://example.com/clean-code.jpg"
+  },
+  {
+    "id": 4,
+    "titulo": "C# in Depth",
+    "precio": 54.99,
+    "tags": ["C#", "Advanced", "Backend"],
+    "imagen": "https://example.com/csharp-depth.jpg"
+  },
+  {
+    "id": 5,
+    "titulo": "Learning PHP, MySQL & JavaScript",
+    "precio": 35.5,
+    "tags": ["PHP", "MySQL", "Web Development"],
+    "imagen": "https://example.com/php-mysql-js.jpg"
+  },
+  {
+    "id": 6,
+    "titulo": "Eloquent JavaScript",
+    "precio": 25.0,
+    "tags": ["JavaScript", "Programming", "Web"],
+    "imagen": "https://example.com/eloquent-js.jpg"
+  },
+  {
+    "id": 7,
+    "titulo": "You Don't Know JS Yet",
+    "precio": 32.0,
+    "tags": ["JavaScript", "Advanced", "Frontend"],
+    "imagen": "https://example.com/you-dont-know-js.jpg"
+  },
+  {
+    "id": 8,
+    "titulo": "The Rust Programming Language",
+    "precio": 42.5,
+    "tags": ["Rust", "Systems Programming", "Memory Safety"],
+    "imagen": "https://example.com/rust-book.jpg"
+  },
+  {
+    "id": 9,
+    "titulo": "Effective TypeScript",
+    "precio": 37.99,
+    "tags": ["TypeScript", "JavaScript", "Frontend"],
+    "imagen": "https://example.com/effective-ts.jpg"
+  },
+  {
+    "id": 10,
+    "titulo": "Go Programming Blueprints",
+    "precio": 29.95,
+    "tags": ["Go", "Backend", "Concurrency"],
+    "imagen": "https://example.com/go-blueprints.jpg"
+  }
+]
