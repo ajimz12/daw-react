@@ -1,7 +1,10 @@
 import React from "react";
 
 const LiCartProduct = (props) => {
-  const { product, index } = props;
+  const { product, index, deleteFromCart} = props;
+  const handleClick = () => {
+    deleteFromCart(product);
+  };
   return (
     <>
       <li
@@ -14,7 +17,7 @@ const LiCartProduct = (props) => {
         <span className="text-xl text-blue-800 font-medium">
           {product.precio}€
         </span>
-        <button className="bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md">
+        <button onClick={handleClick} className="bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md">
           Quitar
         </button>
         {/* <p>Total: {total}</p> */}

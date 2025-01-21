@@ -35,7 +35,9 @@ const ProductList = () => {
     return cart.reduce((acc, product) => acc + product.precio, 0);
   };
 
-  const deleteFromCart = (product) => {};
+  const deleteFromCart = (product) => {
+    setCart((prevCart) => prevCart.filter((p) => p.id !== product.id));
+  };
 
   return (
     <>
@@ -63,7 +65,7 @@ const ProductList = () => {
           ) : (
             <ul>
               {cart.map((product, index) => {
-                return <LiCartProduct key={index} product={product} />;
+                return <LiCartProduct key={index} product={product} deleteFromCart={deleteFromCart}/>;
               })}
             </ul>
           )}
