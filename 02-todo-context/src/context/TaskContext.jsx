@@ -1,50 +1,57 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
-// Crear contexto
+/**
+ * Una tarea típica ha de ser:
+ * {
+ *  id: string,
+ *  title: string,
+ *  completed: boolean
+ *}
+ */
+// crear el contexto
 export const TaskContext = createContext();
 
-// Crear provider del contexto
+// crear el proveedor (provider) del contexto
+
 export const TaskProvider = ({ children }) => {
-  // acciones sobre una tarea
+  // hooks
+  const [tasks, setTasks] = useState(() => {
+    const savedTask = localStorage.getItem("tasks");
+    return savedTask ? JSON.parse(savedTask) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, []);
+
+  // funciones
+  // acciones sobre una tarea:
   // - agregar
   // - eliminar
   // - editar
   // - marcar como completada
-  // No olvidar que las tareas han de estar guardadas en el locaStorage (en este ejercicio)
-
-  // hooks
-  const [task, setTask] = useState(() => {
-    const savedTasks = localStorage.getItem("tasks");
-    return savedTasks ? JSON.parse(savedTasks) : [];
-  });
-
+  // No olvidar que las tareas han de estar guardadas en el localStorage
   const addTask = (task) => {
-    setTask((prevTask) => [...prevTask, task]);
+    setTasks((prevTasks) => [...prevTasks, task]);
   };
 
-  const deleteTask = (taskId) => {
-    setTask((prevTask) => prevTask.filter((task) => task.id !== taskId));
+  const removeTask = (taskId) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
   };
 
-  const deleteTask2 = (taskId) => {
-    setTask((prevTask) => prevTask.find((task) => task.id === taskId));
+  const editTask = (taskId, task) => {}; // TODO
+
+  const toggleTaskCompletion = (taskId) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
-
-  const editTask = (taskId, updatedTask) => {}; // TODO
-
-  const markTaskAsCompleted = (taskId) => {
-    setTask((prevTasks) => {
-      return prevTasks.map((prevTask) => {
-        prevTask.id === taskId ? { ...task, completed: !task.completed } : task;
-      });
-    });
-  };
-
-  // funciones
 
   return (
     <TaskContext.Provider
-      value={{ task, addTask, deleteTask, editTask, markTaskAsCompleted }}
+      value={{ tasks, addTask, removeTask, editTask, toggleTaskCompletion }}
     >
       {children}
     </TaskContext.Provider>

@@ -10,33 +10,32 @@ const TaskForm = () => {
     if (taskName.trim()) {
       addTask({
         id: Date.now(),
-        title,
+        title: taskName,
         completed: false,
       });
+      setTaskName("");
     }
-    setTaskName("");
   };
-
   return (
-    <>
-      <form
-        className="p-4 bg-gray-200 rounded-lg shadow-md"
-        onSubmit={handleSubmit}
+    <form
+      className="p-4 bg-gray-200 rounded-lg shadow-md"
+      onSubmit={handleSubmit}
+    >
+      <h2 className="text-xl font-bold mb-4">Agregar Tarea</h2>
+      <input
+        type="text"
+        value={taskName}
+        onChange={(e) => setTaskName(e.target.value)}
+        placeholder="Nombre de la tarea"
+        className="w-full p-2 mb-4 border border-gray-300 rounded-lg"
+      />
+      <button
+        type="submit"
+        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
       >
-        <h2 className="text-xl font-bold mb-4">Crear Tarea</h2>
-        <input
-          type="text"
-          value={taskName}
-          placeholder="Escribe la tarea..."
-          onChange={(e) => setTaskName(e.target.value)}
-          className="w-full p-2 mb-4 border border-gray-300 rounded-lg"
-        />
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-400 text-white rounded-lg"
-        >Crear</button>
-      </form>
-    </>
+        Agregar
+      </button>
+    </form>
   );
 };
 
