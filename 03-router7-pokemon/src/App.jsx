@@ -7,7 +7,11 @@ const App = () => {
    * Y el resto de cosas deberian de estar en RootLayout
    */
 
-  return <RouterProvider router={router} />;
+  return;
+
+  <PokemonProvider>
+    <RouterProvider router={router} />;
+  </PokemonProvider>;
 };
 
 export default App;

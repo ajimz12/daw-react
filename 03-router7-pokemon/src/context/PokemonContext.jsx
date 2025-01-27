@@ -5,12 +5,20 @@ const PokemonContext = createContext();
 export function PokemonProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
 
-  const addToFavorites = (pokemon) => {};
+  const addToFavorites = (pokemon) => {
+    // Verificar que el pokemon ya esta en favoritos
+    if (favorites.some((p) => p.id === pokemon.id)) {
+      return;
+    }
+  };
+  setFavorites((prevFavoritos) => [...prevFavoritos, pokemon]);
 
   const removeFromFavorites = (pokemonId) => {};
 
   return (
-    <PokemonContext.Provider value={{}}>{children}</PokemonContext.Provider>
+    <PokemonContext.Provider addToFavorites={addToFavorites} value={{}}>
+      {children}
+    </PokemonContext.Provider>
   );
 }
 
