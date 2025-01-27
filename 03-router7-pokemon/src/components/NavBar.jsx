@@ -25,13 +25,21 @@ const NavBar = () => {
             </NavLink>
             <NavLink
               to={ROUTES.SEARCH}
-              className="text-white text-2xl font-bold"
+              className={({ isActive }) =>
+                `text-white text-2xl font-bold hover:text-red-600 ${
+                  isActive ? "font-bold" : ""
+                }`
+              }
             >
               SEARCH
             </NavLink>
             <NavLink
               to={ROUTES.FAVORITES}
-              className="text-white text-2xl font-bold"
+              className={({ isActive }) =>
+                `text-white text-2xl font-bold hover:text-red-600 ${
+                  isActive ? "font-bold" : ""
+                }`
+              }
             >
               FAVORITES
             </NavLink>

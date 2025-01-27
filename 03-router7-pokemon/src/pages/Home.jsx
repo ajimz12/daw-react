@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const [pokemons, setPokemons] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetchPokemons();
   }, []);
+
+  const handleClickCard = (name) => {
+    navigate(`/pokemon/${name}`);
+  };
 
   const fetchPokemons = async () => {
     try {
@@ -35,8 +42,9 @@ export const Home = () => {
       <div className="grid grid-cols-3 gap-10">
         {pokemons.map((pokemon) => (
           <div
+            onClick={() => handleClickCard(pokemon.name)}
             key={pokemon.id}
-            className="bg-white rounded-md p-6 hover:shadow-sm"
+            className="bg-white rounded-md p-6 hover:shadow-sm hover:cursor-pointer"
           >
             <div>
               <img
@@ -45,6 +53,9 @@ export const Home = () => {
                 alt={pokemon.name}
               />
               <h2 className="text-lg font-bold mt-4">{pokemon.name}</h2>
+              <button className="bg-blue-400 rounded-md p-3 font-bold text-white mt-5">
+                Favorito
+              </button>
             </div>
           </div>
         ))}
