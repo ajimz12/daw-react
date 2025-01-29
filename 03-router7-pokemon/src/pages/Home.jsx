@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
+import { usePokemon } from "../context/PokemonContext";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
   const [pokemons, setPokemons] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { addToFavorites } = usePokemon();
+
   useEffect(() => {
     fetchPokemons();
   }, []);
@@ -34,6 +38,16 @@ const Home = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <>
+        <div className="flex justify-center items-center h-screen">
+          <Spinner />
+        </div>
+      </>
+    );
+  }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Pokemons Disponibles</h1>
@@ -41,24 +55,29 @@ const Home = () => {
         {pokemons.map((pokemon) => (
           <div
             key={pokemon.id} // id del pokemon
-            className=" bg-white rounded-xl p-6 hover:shadow-sm"
+            className=" bg-white rounded-xl p-6 hover:shadow-md transition-all hover:translate-y-1"
           >
             <div className="relative group">
               <img
-                className="mx-auto"
-                src={pokemon.sprites.front_default}
+                src={pokemon.sprites.other.dream_world.front_default}
                 alt={pokemon.name}
+                className="w-48 h-48 mx-auto"
               />
               <h2 className="text-xl font-bold text-center mt-4">
                 {pokemon.name}
               </h2>
               <div className="flex justify-center space-x-2 mt-4">
-                <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-slate-900">
+                <button
+                  onClick={() => {
+                    addToFavorites(pokemon);
+                  }}
+                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-slate-900"
+                >
                   Añadir a favoritos
                 </button>
                 {/* voy a ir a ver los detalles usando elementos de react router */}
                 <Link
-                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-slate-900"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-slate-900"
                   to={`${ROUTES.SEARCH}/${pokemon.name}`}
                 >
                   Ver Detalles

@@ -1,5 +1,7 @@
 import React from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
+import { usePokemon } from "../context/PokemonContext";
+
 // para traer la ruta que llega a este componente
 //usamos useParams y useNavigate
 const PokemonDetail = () => {
@@ -8,6 +10,7 @@ const PokemonDetail = () => {
   const pokemon = useLoaderData();
   // hook para navegar entre rutas (navegación programática)
   const navigate = useNavigate();
+  const { addToFavorites } = usePokemon();
 
   return (
     <div className="container mx-auto p-4">
@@ -25,7 +28,7 @@ const PokemonDetail = () => {
           alt={pokemon.name}
           className="w-48 h-48 mx-auto"
         />
-        <h1 className="text-3xl font-bold text-center mt-4">{pokemon.name}</h1>
+        <h1 className="text-3xl font-bold text-center mt-4 mb-10">{pokemon.name}</h1>
         {/* Información usando grid */}
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
@@ -50,9 +53,9 @@ const PokemonDetail = () => {
           </div>
 
           <button
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-slate-900"
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-slate-900"
             onClick={() => {
-              console.log("Añadir a favoritos");
+              addToFavorites(pokemon);
             }}
           >
             Añadir a Favoritos
