@@ -1,7 +1,7 @@
-// Estructura de rutas del proyecto
+// estructura de RUTAS de mi proyecto
 export const ROUTES = {
   HOME: "/",
   SEARCH: "/search",
-  POKEMON_DETAIL: "/pokemon/:name",
+  POKEMON_DETAIL: "/search/:name",
   FAVORITES: "/favorites",
 };

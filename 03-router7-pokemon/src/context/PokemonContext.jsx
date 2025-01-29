@@ -1,32 +1,39 @@
 import { createContext, useContext, useState } from "react";
 
+// creación del contexto
 const PokemonContext = createContext();
 
+// creación del proveedor del contexto
 export function PokemonProvider({ children }) {
-  const [favorites, setFavorites] = useState([]);
+  // hook
+  const [favorites, setFavorites] = useState([])
 
-  const addToFavorites = (pokemon) => {
-    // Verificar que el pokemon ya esta en favoritos
-    if (favorites.some((p) => p.id === pokemon.id)) {
+  const addToFavorites =(pokemon) => {
+    // verificamos si el pokemon ya está en favoritos
+    if(favorites.some(poke => poke.id === pokemon.id)){
+      // lanzamos error con sonner
       return;
-    }
-  };
-  setFavorites((prevFavoritos) => [...prevFavoritos, pokemon]);
 
+    }
+    // si no está repetido lo agregamos
+    setFavorites((preFavoritos)=>[...preFavoritos, pokemon])
+
+  }
   const removeFromFavorites = (pokemonId) => {};
 
   return (
-    <PokemonContext.Provider addToFavorites={addToFavorites} value={{}}>
-      {children}
-    </PokemonContext.Provider>
+    <PokemonContext.Provider value={{}}>{children}</PokemonContext.Provider>
   );
 }
 
-// Hook personalizado para cargar el contexto
+// me creo un Hook personalizado para cargar el contexto
 export const usePokemon = () => {
+  // para usar el contexto hacia:
   const context = useContext(PokemonContext);
   if (context === undefined) {
-    throw new Error("usePokemon debe ser usado dentro de un PokemonProvider");
+    throw new Error(
+      "usePokemon debe estar dentro del proveedor PokemonProvider"
+    );
   }
   return context;
 };

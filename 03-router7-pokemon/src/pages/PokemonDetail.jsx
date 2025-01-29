@@ -1,53 +1,65 @@
-import React, { useEffect, useState } from "react";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
-
-export const PokemonDetail = () => {
-  // Pokemon trae la data a traves de la funcionalidad de router-dom
+import React from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
+// para traer la ruta que llega a este componente
+//usamos useParams y useNavigate
+const PokemonDetail = () => {
+  //  pokemon trae la data traves de la funcionalidad loader de react
+  // router dom
   const pokemon = useLoaderData();
-  const navigate = useNavigate(); // Hook para navegar entre rutas
+  // hook para navegar entre rutas (navegación programática)
+  const navigate = useNavigate();
 
   return (
-    <>
-      <div className="container mx-auto p-4 bg-gray-200">
-        <div className="flex flex-col items-center">
-          <img
-            src={pokemon.sprites.front_default}
-            alt={pokemon.name}
-            className="mb-4"
-          />
-          <h1 className="text-3xl font-bold mb-6 text-center">
-            {pokemon.name}
-          </h1>
-          <div className="grid grid-cols-2 gap-5">
-            <h3>Estadisticas</h3>
-            {pokemon.stats.map((stat) => (
-              <div key={stat.stat.name} className="mr-2 text-sm">
-                <span>{stat.base_stat}</span> - {stat.stat.name}
-              </div>
-            ))}
-            <h3>Tipos</h3>
-            {pokemon.types.map((type) => (
-              <div key={type.type.name} className="mr-2 text-sm">
-                <span>{type.base_type}</span> - {type.type.name}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <button className="bg-green-400 rounded-md p-4 text-white hover:bg-green-500 mt-5">
-          Añadir a favoritos
-        </button>
-
+    <div className="container mx-auto p-4">
+      <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-lg">
+        {/* Botón para volver hacia atrás */}
         <button
+          className="mb-4 text-blue-400 hover:underline"
           onClick={() => navigate(-1)}
-          className="bg-blue-400 p-4 rounded-md text-white hover:bg-blue-500"
         >
           Volver
         </button>
+        {/* imagen del pokemon */}
+        <img
+          src={pokemon.sprites.other.dream_world.front_default}
+          alt={pokemon.name}
+          className="w-48 h-48 mx-auto"
+        />
+        <h1 className="text-3xl font-bold text-center mt-4">{pokemon.name}</h1>
+        {/* Información usando grid */}
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <h2 className="text-xl font-semibold mb-2">Estadísticas</h2>
+            {pokemon.stats.map((stat) => (
+              <div key={stat.stat.name}>
+                <p className="capitalize">
+                  {stat.stat.name}: {stat.base_stat}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold mb-2">Tipos</h2>
+            <div className="flex gap-2">
+              {pokemon.types.map((type) => (
+                <p key={type.type.name} className="capitalize">
+                  {type.type.name}
+                </p>
+              ))}
+            </div>
+          </div>
+
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-slate-900"
+            onClick={() => {
+              console.log("Añadir a favoritos");
+            }}
+          >
+            Añadir a Favoritos
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
