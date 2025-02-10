@@ -19,23 +19,23 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/movies",
+        path: "movies",
         element: <MovieList />,
       },
       {
-        path: "/movie/:id",
+        path: "movie/:id",
         element: <MovieDetail />,
       },
       {
-        path: "/search",
+        path: "search",
         element: <Search />,
       },
       {
-        path: "/reviews",
+        path: "reviews",
         element: <Reviews />,
       },
       {
-        path: "/favorites",
+        path: "favorites",
         element: <Favorites />,
       },
     ],
