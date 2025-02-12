@@ -1,45 +1,45 @@
 const API_KEY = import.meta.env.VITE_API_KEY;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const BASE_IMAGE_URL = import.meta.env.VITE_BASE_IMAGE;
+const BASE_IMAGE_URL = import.meta.env.VITE_BASE_IMAGE_URL;
 
-// Tamaño de imagenes
+// TAMAÑOS de las imágenes
 export const SIZE = {
   POSTER: "w500",
   ORIGINAL: "original",
 };
 
-// Funcion de fetching a la API
+// Función para hacer fetch a la API URL, opciones
 const fetchFromAPI = async (endpoint, options = {}) => {
   try {
+    //https://api.themoviedb.org/3/movie/popular?api_key=8930572ca461d9b58d8f05f72d6f419a&language=es-ES
     const response = await fetch(
       `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=es-ES&${new URLSearchParams(
         options
       )}`
     );
-
     if (!response.ok) {
-      throw new Error(`Error ${response.status}`);
+      throw new Error("Error en la petición");
     }
-
-    const { results } = await response.json();
-    return results;
+    const data = await response.json();
+    return data;
   } catch (error) {
+    console.error(error);
     throw error;
   }
 };
 
-export const getPopularMovies = async () => {
-  return await fetchFromAPI("/movie/popular");
+export const getPopularMovies = async (page) => {
+  return await fetchFromAPI("/movie/popular", {page});
 };
 
-export const getMovieDetails = async (movieId) => {
-  return await fetchFromAPI(`/movie/${movieId}`);
+export const getMovieDetail = async (id) => {
+  return await fetchFromAPI(`/movie/${id}`);
 };
 
-export const getImageURL = async (path, size = SIZE.POSTER) => {
-  return `${BASE_IMAGE_URL}${size}${path}`;
+export const getImageURL = (path, size = SIZE.POSTER) => {
+  return `${BASE_IMAGE_URL}/${size}${path}`;
 };
 
-export const getMovieVideos = async (movieId) => {
-  return await fetchFromAPI(`/movie/${movieId}/videos`);
+export const getMovieVideos = async (id) => {
+  return await fetchFromAPI(`/movie/${id}/videos`);
 };

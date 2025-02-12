@@ -19,7 +19,7 @@ const RootLayout = () => {
         <main>
           <Outlet />
         </main>
-        <footer className="bg-sky-950 text-white fixed bottom-0 w-full">
+        <footer className="bg-sky-950 text-white   w-full">
           <div className="max-h-7xl mx-auto px-4 py-4 text-center">
             <p>&copy; 2025 Videoclub. Todos los derechos reservados.</p>
             <p>Hecho con &hearts; por Álvaro</p>
