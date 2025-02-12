@@ -12,7 +12,9 @@ export const SIZE = {
 const fetchFromAPI = async (endpoint, options = {}) => {
   try {
     const response = await fetch(
-      `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=es-ES`
+      `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=es-ES&${new URLSearchParams(
+        options
+      )}`
     );
 
     if (!response.ok) {
@@ -32,6 +34,10 @@ export const getPopularMovies = async () => {
 
 export const getMovieDetails = async (movieId) => {
   return await fetchFromAPI(`/movie/${movieId}`);
+};
+
+export const getImageURL = async (path, size = SIZE.POSTER) => {
+  return `${BASE_IMAGE_URL}${size}${path}`;
 };
 
 export const getMovieVideos = async (movieId) => {
