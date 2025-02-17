@@ -8,9 +8,15 @@ const RootLayout = () => {
         <nav className="bg-sky-950 text-white shadow-lg mb-6">
           <div className="max-h-7xl mx-auto px-4">
             <div className="flex justify-between h-16">
-              <div className="flex items-center">
-                <NavLink to="/" className="text-xl font-bold py-8">
+              <div className="flex items-center space-x-5">
+                <NavLink to="/" className="text-xl font-bold py-8 ">
                   Videoclub
+                </NavLink>
+                <NavLink to="/search" className="text-xl font-bold py-8">
+                  Búsqueda
+                </NavLink>
+                <NavLink to="/favorites" className="text-xl font-bold py-8">
+                  Favoritos
                 </NavLink>
               </div>
             </div>

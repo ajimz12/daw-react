@@ -32,7 +32,7 @@ const Home = () => {
   return (
     <div className="space-y-8">
       <header className="text-center">
-        <h1 className="text-4xl font-bold text-sky-950">Pelis Pirata</h1>
+        <h1 className="text-4xl font-bold text-sky-950">Videoclub</h1>
         <p className="mt-4 text-gray-800">
           Aquí podrás encontrar las películas más populares del momento
         </p>

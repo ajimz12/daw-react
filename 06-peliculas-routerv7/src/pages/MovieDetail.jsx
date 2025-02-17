@@ -8,23 +8,25 @@ const MovieDetail = () => {
   const { id } = useParams();
 
   // Fetch datos de la película
-  const { data: movieData, loading: movieLoading, error: movieError } = useFetch(
-    () => getMovieDetail(id),
-    [id]
-  );
+  const {
+    data: movieData,
+    loading: movieLoading,
+    error: movieError,
+  } = useFetch(() => getMovieDetail(id), [id]);
 
   // Fetch videos de la película
-  const { data: videoData, loading: videoLoading, error: videoError } = useFetch(
-    () => getMovieVideos(id),
-    [id]
-  );
+  const { data: videoData } = useFetch(() => getMovieVideos(id), [id]);
 
-  if (movieError || videoError) {
+  // Obtener el key del primer trailer disponible
+  const trailerKey = videoData?.results.find(
+    (video) => video.type === "Trailer"
+  )?.key;
+
+  // Validar si la película existe
+  if (movieError) {
     return (
-      <div className="text-center py-10">
-        <p className="text-2xl font-bold text-red-500">
-          Error al cargar la película: {movieError || videoError}
-        </p>
+      <div className="text-center">
+        <h1>Error al cargar la pelicula</h1>
         <Link to="/" className="text-blue-500">
           Volver al inicio
         </Link>
@@ -32,12 +34,9 @@ const MovieDetail = () => {
     );
   }
 
-  // Obtener el key del primer trailer disponible
-  const trailerKey = videoData?.results.find((video) => video.type === "Trailer")?.key;
-
   return (
     <div>
-      {movieLoading || videoLoading ? (
+      {movieLoading ? (
         <PacmanLoader className="mx-auto mt-20" />
       ) : (
         <>
@@ -68,13 +67,18 @@ const MovieDetail = () => {
               </div>
 
               {/* Detalles de la película */}
-              <div className="col-span-2 space-y-4">
+              <div className="col-span-2 space-y-5">
                 <h2 className="text-2xl font-bold">Sinopsis</h2>
                 <p>{movieData?.overview}</p>
 
                 <div className="flex items-center space-x-2">
                   <span className="font-bold">Año</span>
                   <span>{movieData?.release_date.split("-")[0]}</span>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <span className="font-bold">Duracion</span>
+                  <span>{movieData?.runtime} minutos</span>
                 </div>
 
                 <div className="flex items-center space-x-2">
@@ -86,7 +90,10 @@ const MovieDetail = () => {
                   <span className="font-bold mr-3">Géneros</span>
                   <ul className="inline-flex flex-wrap gap-2">
                     {movieData?.genres?.map((genre) => (
-                      <li key={genre.id} className="bg-gray-200 px-2 py-1 rounded text-sm">
+                      <li
+                        key={genre.id}
+                        className="bg-gray-200 px-2 py-1 rounded text-sm"
+                      >
                         {genre.name}
                       </li>
                     ))}
@@ -94,7 +101,7 @@ const MovieDetail = () => {
                 </div>
 
                 {/* Trailer */}
-                <div className="mt-4">
+                <div className="mt-20">
                   {trailerKey ? (
                     <iframe
                       width="100%"
@@ -103,7 +110,9 @@ const MovieDetail = () => {
                       allowFullScreen
                     ></iframe>
                   ) : (
-                    <p className="italic text-gray-500">No hay trailers disponibles.</p>
+                    <p className="italic text-gray-500">
+                      No hay trailers disponibles.
+                    </p>
                   )}
                 </div>
               </div>
@@ -112,13 +121,17 @@ const MovieDetail = () => {
             {/* Sección Favoritos (sin funcionalidad aún) */}
             <section className="mt-8">
               <h2 className="text-2xl font-bold mb-4">Favoritos</h2>
-              <p className="italic text-gray-500">Funcionalidad no disponible aún.</p>
+              <p className="italic text-gray-500">
+                Funcionalidad no disponible aún.
+              </p>
             </section>
 
             {/* Sección Reseñas (sin funcionalidad aún) */}
             <section className="mt-8">
               <h2 className="text-2xl font-bold mb-4">Reseñas</h2>
-              <p className="italic text-gray-500">Funcionalidad no disponible aún.</p>
+              <p className="italic text-gray-500">
+                Funcionalidad no disponible aún.
+              </p>
             </section>
           </article>
         </>
