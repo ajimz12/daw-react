@@ -1,25 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
+import SearchBox from "../components/SearchBox";
+import MovieCard from "../components/MovieCard";
+import { searchMovies } from "../services/tmdb";
+import LoadingSpinner from "../components/loadingspinner";
 
 const Search = () => {
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSearch = async (searchTerm) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await searchMovies(searchTerm);
+      setMovies(data.results);
+    } catch (err) {
+      setError("Error al buscar películas");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-5">
       <header className="text-center">
-        <h1 className="text-4xl font-bold text-sky-950">Buscar Pelis</h1>
+        <h1 className="text-4xl font-bold text-sky-950">Buscar Peliculas</h1>
         <p className="mt-4 text-gray-800">
-          Aquí podrás buscar las películas que quieras
+          Buscar Peliculas por Titulo
         </p>
       </header>
-      {/* formulario de búsqueda */}
-      <form className="flex justify-center mt-10">
-        <input
-          type="text"
-          placeholder="Buscar..."
-          className="p-2 rounded-l border border-gray-500"
-        />
-        <button className="bg-sky-700 p-2 rounded-r text-white cursor-pointer hover:bg-sky-800">
-          Buscar
-        </button>
-      </form>
+      <div className="flex justify-center">
+        <SearchBox onSearch={handleSearch} />
+      </div>
+
+      {error && <p className="text-red-500 text-center">{error}</p>}
+
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 p-5">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

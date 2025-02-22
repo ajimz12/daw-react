@@ -1,28 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getImageURL, getMovieDetail, getMovieVideos } from "../services/tmdb";
 import { useFetch } from "../hooks/useFetch";
-import { PacmanLoader } from "react-spinners";
+import LoadingSpinner from "../components/loadingspinner";
+import { useFavorites } from "../contexts/FavoritesContext";
+import ReviewForm from "../components/ReviewForm";
+import ReviewItem from "../components/ReviewItem";
+import { useReviews } from "../contexts/reviewcontext";
 
 const MovieDetail = () => {
   const { id } = useParams();
+  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
+  const { getMovieReviews } = useReviews();
+  const favorite = isFavorite(Number(id));
+  const reviews = getMovieReviews(Number(id));
 
-  // Fetch datos de la película
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const handleFavoriteClick = () => {
+    if (favorite) {
+      removeFavorite(Number(id));
+    } else {
+      addFavorite(movieData);
+    }
+  };
+
   const {
     data: movieData,
     loading: movieLoading,
     error: movieError,
   } = useFetch(() => getMovieDetail(id), [id]);
 
-  // Fetch videos de la película
   const { data: videoData } = useFetch(() => getMovieVideos(id), [id]);
-
-  // Obtener el key del primer trailer disponible
   const trailerKey = videoData?.results.find(
     (video) => video.type === "Trailer"
   )?.key;
 
-  // Validar si la película existe
   if (movieError) {
     return (
       <div className="text-center">
@@ -33,15 +48,13 @@ const MovieDetail = () => {
       </div>
     );
   }
-
   return (
     <div>
       {movieLoading ? (
-        <PacmanLoader className="mx-auto mt-20" />
+        <LoadingSpinner className="mx-auto mt-20" />
       ) : (
         <>
           <article className="max-w-4xl mx-auto">
-            {/* Header con imagen de fondo */}
             <header className="relative h-96 mb-8">
               <img
                 className="w-full h-full object-cover rounded-lg"
@@ -49,41 +62,52 @@ const MovieDetail = () => {
                 alt={movieData?.title}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent">
-                <div className="absolute bottom-0 text-white p-6">
-                  <h1 className="text-4xl font-bold">{movieData?.title}</h1>
+                <div className="absolute bottom-0 p-6 w-full flex justify-between items-center">
+                  <h1 className="text-4xl font-bold text-white">
+                    {movieData?.title}
+                  </h1>
+                  <button
+                    onClick={handleFavoriteClick}
+                    className={`text-5xl transition-colors hover:scale-110 cursor-pointer ${
+                      favorite ? "text-red-500" : "text-white"
+                    }`}
+                  >
+                    ♥
+                  </button>
                 </div>
               </div>
             </header>
 
-            {/* Contenido principal */}
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Póster */}
-              <div>
+            <div className="grid md:grid-cols-3 gap-8 mb-20">
+              <div className="space-y-4">
                 <img
                   src={getImageURL(movieData?.poster_path)}
                   alt={movieData?.title}
-                  className="rounded-lg shadow-md"
+                  className="rounded-lg shadow-md w-full"
                 />
+
+                <div className="space-y-3 p-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="font-bold">Año:</span>
+                    <span>{movieData?.release_date.split("-")[0]}</span>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <span className="font-bold">Duración:</span>
+                    <span>{movieData?.runtime} minutos</span>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <span className="font-bold">Calificación:</span>
+                    <span>⭐{Number(movieData?.vote_average).toFixed(1)}</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Detalles de la película */}
               <div className="col-span-2 space-y-5">
-                <h2 className="text-2xl font-bold">Sinopsis</h2>
-                <p>{movieData?.overview}</p>
-
-                <div className="flex items-center space-x-2">
-                  <span className="font-bold">Año</span>
-                  <span>{movieData?.release_date.split("-")[0]}</span>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <span className="font-bold">Duracion</span>
-                  <span>{movieData?.runtime} minutos</span>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <span className="font-bold">Calificación</span>
-                  <span>⭐{Number(movieData?.vote_average).toFixed(1)}</span>
+                <div>
+                  <h2 className="text-2xl font-bold mb-3">Sinopsis</h2>
+                  <p>{movieData?.overview}</p>
                 </div>
 
                 <div>
@@ -100,8 +124,7 @@ const MovieDetail = () => {
                   </ul>
                 </div>
 
-                {/* Trailer */}
-                <div className="mt-20">
+                <div className="mt-8">
                   {trailerKey ? (
                     <iframe
                       width="100%"
@@ -117,21 +140,26 @@ const MovieDetail = () => {
                 </div>
               </div>
             </div>
-
-            {/* Sección Favoritos (sin funcionalidad aún) */}
-            <section className="mt-8">
-              <h2 className="text-2xl font-bold mb-4">Favoritos</h2>
-              <p className="italic text-gray-500">
-                Funcionalidad no disponible aún.
-              </p>
-            </section>
-
-            {/* Sección Reseñas (sin funcionalidad aún) */}
-            <section className="mt-8">
+            <section className="mt-8 space-y-6 mb-10">
               <h2 className="text-2xl font-bold mb-4">Reseñas</h2>
-              <p className="italic text-gray-500">
-                Funcionalidad no disponible aún.
-              </p>
+
+              <ReviewForm movieId={Number(id)} />
+
+              <div className="space-y-4 mt-6">
+                {reviews.length === 0 ? (
+                  <p className="text-gray-500 italic">
+                    No hay reseñas todavía. ¡Sé el primero en opinar!
+                  </p>
+                ) : (
+                  reviews.map((review) => (
+                    <ReviewItem
+                      key={review.id}
+                      review={review}
+                      movieId={Number(id)}
+                    />
+                  ))
+                )}
+              </div>
             </section>
           </article>
         </>

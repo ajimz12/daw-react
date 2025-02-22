@@ -11,7 +11,6 @@ export const SIZE = {
 // Función para hacer fetch a la API URL, opciones
 const fetchFromAPI = async (endpoint, options = {}) => {
   try {
-    //https://api.themoviedb.org/3/movie/popular?api_key=8930572ca461d9b58d8f05f72d6f419a&language=es-ES
     const response = await fetch(
       `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=es-ES&${new URLSearchParams(
         options
@@ -29,11 +28,35 @@ const fetchFromAPI = async (endpoint, options = {}) => {
 };
 
 export const getPopularMovies = async (page) => {
-  return await fetchFromAPI("/movie/popular", {page});
+  return await fetchFromAPI("/movie/popular", { page });
 };
 
 export const getMovieDetail = async (id) => {
   return await fetchFromAPI(`/movie/${id}`);
+};
+
+export const searchMovies = async (query, page = 1) => {
+  return await fetchFromAPI("/search/movie", { query, page });
+};
+
+export const getMoviesByGenre = async (genreId, page = 1) => {
+  return await fetchFromAPI("/discover/movie", {
+    with_genres: genreId,
+    page,
+  });
+};
+
+export const getMoviesByYear = async (year, page = 1) => {
+  return await fetchFromAPI("/discover/movie", {
+    primary_release_year: year,
+    page,
+    sort_by: "popularity.desc",
+    include_adult: false
+  });
+};
+
+export const getGenres = async () => {
+  return await fetchFromAPI("/genre/movie/list");
 };
 
 export const getImageURL = (path, size = SIZE.POSTER) => {
