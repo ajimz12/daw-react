@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
@@ -11,11 +12,11 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    checkAuth();
+    login();
   }, []);
 
   // Comprobar localStorage para ver si el usuario existe
-  const checkAuth = () => {
+  const login = () => {
     try {
       const user = localStorage.getItem("user");
       if (user) {
@@ -34,9 +35,43 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const logout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem("user");
+  };
+
+  const register = (user = {}) => {
+    // Simular registro
+    try {
+      setUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser((prevUser) => {
+        return {
+          ...prevUser,
+          ...user,
+        };
+      });
+    } catch (error) {
+      console.log(error.message);
+      i;
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, isLoading, isAuthenticated, error, checkAuth }}
+      value={{
+        user,
+        isLoading,
+        isAuthenticated,
+        error,
+        login,
+        logout,
+        register,
+      }}
     >
       {children}
     </AuthContext.Provider>
@@ -45,7 +80,7 @@ export const AuthProvider = ({ children }) => {
 
 // Hook personalizado para usar el contexto
 export const useAuth = () => {
-  const context = React.useContext(AuthContext);
+  const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth debe ser usado dentro de un AuthProvider");
   }
